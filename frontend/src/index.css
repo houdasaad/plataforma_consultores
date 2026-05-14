@@ -1,0 +1,6 @@
+/* Base layer; typography and colors come from MUI theme */
+html,
+body,
+#root {
+  min-height: 100%;
+}

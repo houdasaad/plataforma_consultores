@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semana 1 — Objetivo</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #2563eb;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1d4ed8 0%, transparent 55%),
+                  radial-gradient(900px 500px at 100% 20%, #312e81 0%, transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .slide {
+      width: min(1100px, 100%);
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      padding: clamp(1.75rem, 4vw, 3rem);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .subtitle {
+      margin: 0 0 1.75rem;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 52ch;
+    }
+    .grid {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .box {
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 1.25rem 1.35rem;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+    .box h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #93c5fd;
+      letter-spacing: 0.02em;
+    }
+    ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 0.98rem;
+    }
+    li { margin-bottom: 0.45rem; }
+    .footer {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .accent-bar {
+      width: 4rem;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #38bdf8);
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <article class="slide" role="document">
+    <span class="badge">MVP Plataforma de consultoría política · Semana 1</span>
+    <div class="accent-bar" aria-hidden="true"></div>
+    <h1>Objetivo de la semana 1</h1>
+    <p class="subtitle">
+      Establecer la base técnica del producto: repositorio, entornos, arquitectura desacoplada
+      (Django + DRF + React + MUI + PostgreSQL) y la estructura general lista para iterar en las semanas siguientes.
+    </p>
+    <div class="grid">
+      <section class="box" aria-labelledby="focus-title">
+        <h2 id="focus-title">Enfoque</h2>
+        <ul>
+          <li>Configuración inicial del proyecto y control de versiones.</li>
+          <li>Entorno de desarrollo reproducible (local y/o Docker).</li>
+          <li>Arquitectura backend / frontend y convenciones de API (<code style="color:#bae6fd">/api/v1</code>).</li>
+          <li>Base de datos PostgreSQL y modelo de datos inicial alineado al MVP.</li>
+          <li>Estructura general del sistema (apps, permisos por rol, healthcheck).</li>
+        </ul>
+      </section>
+      <section class="box" aria-labelledby="deliver-title">
+        <h2 id="deliver-title">Entregables esperados</h2>
+        <ul>
+          <li>Proyecto inicial configurado y documentado en README.</li>
+          <li>Arquitectura técnica base acordada (stack, despliegue objetivo, variables de entorno).</li>
+          <li>Entorno de desarrollo operativo (servidor API + cliente + DB accesibles).</li>
+        </ul>
+      </section>
+    </div>
+    <footer class="footer">
+      Semana 1 del cronograma MVP (8 semanas) · Salida regional en español · Pagos y videollamada en fases posteriores según plan.
+    </footer>
+  </article>
+</body>
+</html>
