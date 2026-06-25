@@ -1,13 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { api, clearTokens, setTokens } from '../api/client'
 
-export type Role = 'admin' | 'consultant' | 'candidate'
+export type Role = 'admin' | 'consultant' | 'candidate' | 'provider'
 
-type UserInfo = {
+export type UserInfo = {
   id: number
   email: string
   role: Role
   is_email_verified: boolean
+  is_demo_universal?: boolean
+  demo_capabilities?: Role[]
 }
 
 type AuthContextValue = {

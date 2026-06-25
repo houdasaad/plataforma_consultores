@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "notifications",
     "core",
     "campaign_diagnostic",
+    "providers",
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,23 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
 OPENAI_EMBEDDING_MODEL = os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 OPENAI_EMBEDDING_DIMENSIONS = int(os.environ.get("OPENAI_EMBEDDING_DIMENSIONS", "512"))
+
+# Mercado Pago (mock when token empty)
+MERCADOPAGO_ACCESS_TOKEN = os.environ.get("MERCADOPAGO_ACCESS_TOKEN", "")
+MERCADOPAGO_PUBLIC_KEY = os.environ.get("MERCADOPAGO_PUBLIC_KEY", "")
+DEFAULT_CURRENCY = os.environ.get("DEFAULT_CURRENCY", "USD")
+
+# MVP catalog visibility (disable in production: set env to 0)
+MVP_AUTO_APPROVE_CONSULTANTS = os.environ.get(
+    "MVP_AUTO_APPROVE_CONSULTANTS", "1" if DEBUG else "0"
+) == "1"
+MVP_AUTO_PUBLISH_SERVICES = os.environ.get(
+    "MVP_AUTO_PUBLISH_SERVICES", "1" if DEBUG else "0"
+) == "1"
+
+# Single login for staff + consultant + candidate portals (demo only)
+DEMO_UNIVERSAL_EMAILS = tuple(
+    e.strip().lower()
+    for e in os.environ.get("DEMO_UNIVERSAL_EMAILS", "demo@example.com").split(",")
+    if e.strip()
+)

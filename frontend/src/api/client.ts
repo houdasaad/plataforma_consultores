@@ -27,6 +27,10 @@ api.interceptors.request.use((config) => {
   if (access) {
     config.headers.Authorization = `Bearer ${access}`
   }
+  // Let the browser set multipart boundary (default json Content-Type breaks file uploads).
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type']
+  }
   return config
 })
 

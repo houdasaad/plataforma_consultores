@@ -101,11 +101,6 @@ class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        u = request.user
-        data = {
-            "id": u.id,
-            "email": u.email,
-            "role": u.role,
-            "is_email_verified": u.is_email_verified,
-        }
-        return Response(data)
+        from accounts.user_payload import build_user_payload
+
+        return Response(build_user_payload(request.user))

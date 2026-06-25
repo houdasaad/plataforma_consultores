@@ -1,19 +1,73 @@
 from django.urls import path
 
+from payments.views import ConsultantPaymentListView
 from consultants.views import (
     ConsultantApproveView,
+    ConsultantCommunityRatingCreateView,
+    ConsultantCvApproveView,
+    ConsultantCvExtractView,
+    ConsultantCvImportView,
+    ConsultantCvMockPdfView,
+    ConsultantCvMockWordView,
+    ConsultantCvProfileView,
+    ConsultantCvPublishView,
+    ConsultantCvSaveView,
+    ConsultantLinkedInImportView,
     ConsultantMeView,
     ConsultantPendingListView,
+    ConsultantPortalSummaryView,
     ConsultantPublicDetailView,
     ConsultantPublicListView,
     ConsultantRejectView,
+    ConsultantServiceDetailView,
+    ConsultantServiceListCreateView,
+    ConsultantServicePublishView,
+    ConsultantStaffChangeStatusView,
+    ConsultantStaffCreateView,
+    ConsultantStaffDetailView,
+    ConsultantStaffListView,
+    ConsultantVerifyView,
 )
 
 urlpatterns = [
     path("", ConsultantPublicListView.as_view(), name="consultant-list"),
     path("<int:pk>/", ConsultantPublicDetailView.as_view(), name="consultant-detail"),
     path("me/", ConsultantMeView.as_view(), name="consultant-me"),
+    path("me/linkedin-import/", ConsultantLinkedInImportView.as_view(), name="consultant-linkedin-import"),
+    path("me/verify/", ConsultantVerifyView.as_view(), name="consultant-verify"),
+    path("me/cv/profile/", ConsultantCvProfileView.as_view(), name="consultant-cv-profile"),
+    path("me/cv/save/", ConsultantCvSaveView.as_view(), name="consultant-cv-save"),
+    path("me/cv/publish/", ConsultantCvPublishView.as_view(), name="consultant-cv-publish"),
+    path("me/cv/import/", ConsultantCvImportView.as_view(), name="consultant-cv-import"),
+    path("me/cv/extract/", ConsultantCvExtractView.as_view(), name="consultant-cv-extract"),
+    path("me/cv/approve/", ConsultantCvApproveView.as_view(), name="consultant-cv-approve"),
+    path("me/cv/samples/word/", ConsultantCvMockWordView.as_view(), name="consultant-cv-mock-word"),
+    path("me/cv/samples/pdf/", ConsultantCvMockPdfView.as_view(), name="consultant-cv-mock-pdf"),
+    path("me/portal/", ConsultantPortalSummaryView.as_view(), name="consultant-portal"),
+    # FROZEN — ConsultantService excluded from MVP (CORFO model v1)
+    # path("me/services/", ConsultantServiceListCreateView.as_view(), name="consultant-services"),
+    # path("me/services/<int:pk>/", ConsultantServiceDetailView.as_view(), name="consultant-service-detail"),
+    # path(
+    #     "me/services/<int:pk>/publish/",
+    #     ConsultantServicePublishView.as_view(),
+    #     name="consultant-service-publish",
+    # ),
+    path(
+        "community-ratings/",
+        ConsultantCommunityRatingCreateView.as_view(),
+        name="consultant-community-rating",
+    ),
+    # Staff endpoints
+    path("staff/", ConsultantStaffListView.as_view(), name="consultant-staff-list"),
+    path("staff/create/", ConsultantStaffCreateView.as_view(), name="consultant-staff-create"),
+    path("staff/<int:pk>/", ConsultantStaffDetailView.as_view(), name="consultant-staff-detail"),
+    path("staff/<int:pk>/change-status/", ConsultantStaffChangeStatusView.as_view(), name="consultant-staff-change-status"),
     path("staff/pending/", ConsultantPendingListView.as_view(), name="consultant-pending"),
     path("staff/<int:pk>/approve/", ConsultantApproveView.as_view(), name="consultant-approve"),
     path("staff/<int:pk>/reject/", ConsultantRejectView.as_view(), name="consultant-reject"),
+    path(
+        "me/payments/",
+        ConsultantPaymentListView.as_view(),
+        name="consultant-payment-history",
+    ),
 ]

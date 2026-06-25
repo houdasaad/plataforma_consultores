@@ -3,6 +3,7 @@ import {
   AppBar,
   Box,
   Button,
+  Chip,
   Container,
   Drawer,
   IconButton,
@@ -11,11 +12,13 @@ import {
   ListItemText,
   Stack,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { useState } from 'react'
 import { Link as RouterLink, Outlet, useNavigate } from 'react-router-dom'
+import { isUniversalDemo, userCanAccess } from '../auth/access'
 import { useAuth } from '../auth/AuthContext'
 
 const drawerWidth = 280
@@ -50,25 +53,36 @@ export function MainLayout() {
             <ListItemText primary={item.label} slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
           </ListItemButton>
         ))}
-        {user?.role === 'candidate' && (
+        {userCanAccess(user, 'candidate') && (
           <>
             <ListItemButton component={RouterLink} to="/candidato" sx={{ mx: 1, borderRadius: 2 }}>
               <ListItemText primary="Panel candidato" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
             </ListItemButton>
-            <ListItemButton component={RouterLink} to="/candidato/diagnostico" sx={{ mx: 1, borderRadius: 2 }}>
-              <ListItemText primary="Diagnóstico de campaña" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
+            {/* Diagnóstico accesible desde el panel del candidato, no como pestaña principal */}
+            <ListItemButton component={RouterLink} to="/candidato/marketplace" sx={{ mx: 1, borderRadius: 2 }}>
+              <ListItemText primary="Marketplace" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
             </ListItemButton>
           </>
         )}
-        {user?.role === 'consultant' && (
+        {userCanAccess(user, 'consultant') && (
           <ListItemButton component={RouterLink} to="/consultor" sx={{ mx: 1, borderRadius: 2 }}>
             <ListItemText primary="Panel consultor" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
           </ListItemButton>
         )}
-        {user?.role === 'admin' && (
+        {userCanAccess(user, 'admin') && (
           <ListItemButton component={RouterLink} to="/staff" sx={{ mx: 1, borderRadius: 2 }}>
             <ListItemText primary="Staff" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
           </ListItemButton>
+        )}
+        {userCanAccess(user, 'provider') && (
+          <>
+            <ListItemButton component={RouterLink} to="/proveedor" sx={{ mx: 1, borderRadius: 2 }}>
+              <ListItemText primary="Proveedor" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
+            </ListItemButton>
+            <ListItemButton component={RouterLink} to="/marketplace" sx={{ mx: 1, borderRadius: 2 }}>
+              <ListItemText primary="Marketplace" slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
+            </ListItemButton>
+          </>
         )}
       </List>
     </Box>
@@ -140,34 +154,42 @@ export function MainLayout() {
                   {item.label}
                 </Button>
               ))}
-              {user?.role === 'candidate' && (
+              {userCanAccess(user, 'candidate') && (
                 <>
                   <Button component={RouterLink} to="/candidato" color="inherit" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                     Candidato
                   </Button>
-                  <Button
-                    component={RouterLink}
-                    to="/candidato/diagnostico"
-                    color="inherit"
-                    sx={{ color: 'text.secondary', fontWeight: 600 }}
-                  >
-                    Diagnóstico
-                  </Button>
+                  {/* Diagnóstico accesible desde el panel del candidato */}
                 </>
               )}
-              {user?.role === 'consultant' && (
+              {userCanAccess(user, 'consultant') && (
                 <Button component={RouterLink} to="/consultor" color="inherit" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                   Consultor
                 </Button>
               )}
-              {user?.role === 'admin' && (
+              {userCanAccess(user, 'admin') && (
                 <Button component={RouterLink} to="/staff" color="inherit" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                   Staff
                 </Button>
               )}
+              {userCanAccess(user, 'provider') && (
+                <>
+                  <Button component={RouterLink} to="/proveedor" color="inherit" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                    Proveedor
+                  </Button>
+                  <Button component={RouterLink} to="/marketplace" color="inherit" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                    Marketplace
+                  </Button>
+                </>
+              )}
             </Stack>
 
             <Stack direction="row" spacing={1} sx={{ ml: 'auto', alignItems: 'center' }}>
+              {user && isUniversalDemo(user) && (
+                <Tooltip title="Cuenta demo: acceso a Staff, Consultor y Candidato">
+                  <Chip label="Demo" size="small" color="secondary" variant="outlined" />
+                </Tooltip>
+              )}
               {!user && (
                 <>
                   <Button component={RouterLink} to="/login" color="inherit" sx={{ color: 'text.primary', fontWeight: 600 }}>

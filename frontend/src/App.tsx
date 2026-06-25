@@ -1,10 +1,16 @@
 import { CircularProgress, Stack } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { userCanAccess } from './auth/access'
 import { useAuth, type Role } from './auth/AuthContext'
 import { MainLayout } from './layouts/MainLayout'
 import { CampaignDiagnosticPage } from './pages/CampaignDiagnosticPage'
 import { CandidateDashboardPage } from './pages/CandidateDashboardPage'
-import { ConsultantDashboardPage } from './pages/ConsultantDashboardPage'
+import { CandidateMarketplacePage } from './pages/CandidateMarketplacePage'
+import { ConsultantCandidateProfilePage } from './pages/ConsultantCandidateProfilePage'
+import { ConsultantPortalPage } from './pages/ConsultantPortalPage'
+import { MarketplacePage } from './pages/MarketplacePage'
+import { ProviderPortalPage } from './pages/ProviderPortalPage'
+import { MercadoPagoMockPage } from './pages/MercadoPagoMockPage'
 import { ConsultantDetailPage } from './pages/ConsultantDetailPage'
 import { ConsultantsPage } from './pages/ConsultantsPage'
 import { HomePage } from './pages/HomePage'
@@ -26,7 +32,7 @@ function RequireRole({ role, children }: { role: Role; children: React.ReactElem
     )
   }
   if (!user) return <Navigate to="/login" replace />
-  if (user.role !== role) return <Navigate to="/" replace />
+  if (!userCanAccess(user, role)) return <Navigate to="/" replace />
   return children
 }
 
@@ -69,12 +75,48 @@ export default function App() {
             </RequireRole>
           }
         />
+        <Route
+          path="candidato/marketplace"
+          element={
+            <RequireRole role="candidate">
+              <CandidateMarketplacePage />
+            </RequireRole>
+          }
+        />
+
+        <Route
+          path="proveedor"
+          element={
+            <RequireRole role="provider">
+              <ProviderPortalPage />
+            </RequireRole>
+          }
+        />
+
+        <Route
+          path="marketplace"
+          element={
+            <RequireRole role="provider">
+              <MarketplacePage />
+            </RequireRole>
+          }
+        />
+
+        <Route path="pago/mercadopago-mock" element={<MercadoPagoMockPage />} />
 
         <Route
           path="consultor"
           element={
             <RequireRole role="consultant">
-              <ConsultantDashboardPage />
+              <ConsultantPortalPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="consultor/candidato/:userId"
+          element={
+            <RequireRole role="consultant">
+              <ConsultantCandidateProfilePage />
             </RequireRole>
           }
         />

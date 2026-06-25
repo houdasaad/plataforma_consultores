@@ -178,4 +178,9 @@ export const MVP_CLIENT_FEATURE_BLOCKS: MvpClientFeatureBlock[] = [
     description:
       'Indicadores resumidos de actividad (por ejemplo reservas y pagos) para apoyar decisiones operativas del equipo que gobierna el servicio.',
   },
+  {
+    title: 'Verificación por la comunidad',
+    description:
+      'Otros usuarios de la plataforma pueden valorar si el trabajo del consultor fue correcto, complementando la revisión de la IA y del equipo del programa.',
+  },
 ]

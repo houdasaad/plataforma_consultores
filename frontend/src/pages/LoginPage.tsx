@@ -17,8 +17,17 @@ export function LoginPage() {
     try {
       await login(email, password)
       navigate('/')
-    } catch {
-      setError('Credenciales inválidas.')
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } })?.response?.status
+      if (!status) {
+        setError(
+          'No se pudo conectar con el servidor. Comprueba que Django esté en marcha y que el proxy de Vite apunte al mismo puerto (p. ej. 8080).',
+        )
+      } else if (status === 401) {
+        setError('Credenciales inválidas.')
+      } else {
+        setError('Error al iniciar sesión. Inténtalo de nuevo.')
+      }
     }
   }
 

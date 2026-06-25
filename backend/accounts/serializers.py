@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction
 from rest_framework import serializers
@@ -18,13 +19,10 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
+        from accounts.user_payload import build_user_payload
+
         data = super().validate(attrs)
-        data["user"] = {
-            "id": self.user.id,
-            "email": self.user.email,
-            "role": self.user.role,
-            "is_email_verified": self.user.is_email_verified,
-        }
+        data["user"] = build_user_payload(self.user)
         return data
 
 
@@ -55,10 +53,17 @@ class RegisterSerializer(serializers.Serializer):
 
         user = User.objects.create_user(email=email, password=password, role=role)
         if role == User.Role.CONSULTANT:
+            approval = (
+                ConsultantProfile.ApprovalStatus.APPROVED
+                if getattr(settings, "MVP_AUTO_APPROVE_CONSULTANTS", False)
+                else ConsultantProfile.ApprovalStatus.PENDING
+            )
             ConsultantProfile.objects.create(
                 user=user,
                 display_name=display_name,
-                approval_status=ConsultantProfile.ApprovalStatus.PENDING,
+                headline="Consultor político",
+                bio="Perfil en construcción.",
+                approval_status=approval,
             )
         else:
             CandidateProfile.objects.create(user=user, display_name=display_name)

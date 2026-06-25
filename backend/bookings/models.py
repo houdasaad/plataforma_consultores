@@ -35,12 +35,39 @@ class Booking(models.Model):
         related_name="candidate_bookings",
     )
     consultant = models.ForeignKey(
-        ConsultantProfile, on_delete=models.CASCADE, related_name="bookings"
+        ConsultantProfile,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="bookings",
+    )
+    provider = models.ForeignKey(
+        "providers.Provider",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
     )
     slot = models.OneToOneField(
         AvailabilitySlot,
+        null=True,
+        blank=True,
         on_delete=models.PROTECT,
         related_name="booking",
+    )
+    consultant_service = models.ForeignKey(
+        "consultants.ConsultantService",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
+    )
+    marketplace_bid = models.ForeignKey(
+        "candidates.MarketplaceBid",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
     )
     diagnostic_submission = models.ForeignKey(
         "diagnostics.DiagnosticSubmission",

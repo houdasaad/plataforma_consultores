@@ -49,6 +49,18 @@ Variables útiles: ver [.env.example](.env.example).
 - Candidato: `candidate@example.com` / `candidate12`
 - Consultores: `consultant1@example.com`, `consultant2@example.com` / `consultant12`
 
+## Integraciones mock (IA y pagos)
+
+- `GET /api/v1/integrations/config/` — ejemplos de configuración OpenAI y Mercado Pago
+- IA (sin clave): verificación de perfil, extracción de CV, revisión de publicaciones (`core.services.mock_ai`)
+- Pagos: `POST /api/v1/payments/mercadopago/preference/` y `.../confirm/` (mock Mercado Pago) además del checkout genérico
+
+## Portal consultor / candidato
+
+- Consultor: `/consultor` — perfil, verificación IA, CV, servicios (USD), marketplace inverso, agenda
+- Candidato: `/candidato`, `/candidato/marketplace` — elección, áreas de interés, subastas inversas
+- Categorías políticas (5 ejes + subcategorías): `seed_demo` → `catalog.seed_categories`
+
 ## Diagnóstico de campaña (rol candidato)
 
 Ruta UI: `/candidato/diagnostico` (sesión con rol **candidate**). La ruta antigua `/diagnostico-campaña` redirige allí.

@@ -8,6 +8,9 @@ class Payment(models.Model):
         PENDING = "pending", "Pending"
         SUCCEEDED = "succeeded", "Succeeded"
         FAILED = "failed", "Failed"
+        HELD = "held", "Held (pending release)"
+        RELEASED = "released", "Released to provider"
+        REFUNDED = "refunded", "Refunded"
 
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name="payments")
     amount = models.DecimalField(max_digits=12, decimal_places=2)
@@ -19,10 +22,21 @@ class Payment(models.Model):
     provider = models.CharField(max_length=40, blank=True, help_text="e.g. mock, stripe")
     external_id = models.CharField(max_length=120, blank=True)
     raw_payload = models.JSONField(default=dict, blank=True)
+    paid_at = models.DateTimeField(null=True, blank=True, help_text="When the payment was actually paid")
+    service_verified_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text="When the service was verified as provided — triggers release to consultant/provider"
+    )
+    released_at = models.DateTimeField(null=True, blank=True, help_text="When funds were released to consultant/provider")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]
+
+    @property
+    def net_amount(self):
+        """Amount minus commission (what the consultant/provider receives)."""
+        return self.amount - self.commission_amount
 
     def __str__(self) -> str:
         return f"Payment {self.pk} ({self.status})"

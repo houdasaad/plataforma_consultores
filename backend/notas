@@ -1,0 +1,28 @@
+admin@example.com / 1234 — superuser Django admin
+
+demo@example.com / 1234 — DEMO UNIVERSAL (staff + consultor + candidato + proveedor en un solo login)
+
+candidate@example.com / 1234 — candidato
+
+consultant1@example.com / 1234 — consultor (aprobado; seed usa consultant12 si no cambió SEED_CONSULTANT_PASSWORD)
+
+proveedor1@example.com  1234
+
+Portal del Proveedor (/proveedor): pestañas "Mis rubros" (requerimientos en categorías del proveedor), "Todos los rubros" (todos los requerimientos del marketplace), y "Mis Cotizaciones" (bids enviados).
+
+
+Catálogo visible para candidatos: consultores con approval_status=approved y servicios publicados.
+En desarrollo (DEBUG): auto-aprobación de consultores y auto-publicación de servicios al crearlos.
+Si ya existían datos pendientes: python manage.py sync_catalog_visibility
+Demo completo: python manage.py seed_demo
+
+
+
+proveedor1@example.com / 1234 — Impresiones Nacionales S.A. (APPROVED)
+proveedor2@example.com / 1234 — DigitalAds Pro Ltda. (APPROVED)
+proveedor3@example.com / 1234 — PrintFast Servicios Gráficos (PENDING; el portal mostrará "no approved provider" hasta que staff apruebe)
+
+Backend: python manage.py runserver 8080
+
+Frontend: npm run dev (proxy /api → http://127.0.0.1:8080 por defecto en vite.config.ts)
+

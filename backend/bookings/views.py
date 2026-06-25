@@ -12,7 +12,8 @@ from bookings.serializers import (
     BookingCreateSerializer,
     BookingSerializer,
 )
-from consultants.models import ConsultantProfile
+from consultants.models import ConsultantProfile, ConsultantService
+from core.demo_access import user_has_demo_capability
 from core.permissions import IsCandidate, IsConsultant
 from diagnostics.models import DiagnosticSubmission
 
@@ -22,7 +23,12 @@ class ConsultantSlotListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         profile = ConsultantProfile.objects.get(user=self.request.user)
-        return AvailabilitySlot.objects.filter(consultant=profile, start_at__gte=timezone.now())
+        qs = AvailabilitySlot.objects.filter(consultant=profile)
+        from_param = self.request.query_params.get("from")
+        to_param = self.request.query_params.get("to")
+        if from_param and to_param:
+            return qs.filter(start_at__gte=from_param, start_at__lt=to_param).order_by("start_at")
+        return qs.filter(start_at__gte=timezone.now()).order_by("start_at")
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -32,6 +38,14 @@ class ConsultantSlotListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         profile = ConsultantProfile.objects.get(user=self.request.user)
         serializer.save(consultant=profile)
+
+
+class ConsultantSlotDestroyView(generics.DestroyAPIView):
+    permission_classes = [IsConsultant]
+
+    def get_queryset(self):
+        profile = ConsultantProfile.objects.get(user=self.request.user)
+        return AvailabilitySlot.objects.filter(consultant=profile, is_booked=False)
 
 
 class PublicSlotListView(generics.ListAPIView):
@@ -83,14 +97,27 @@ class BookingCreateView(views.APIView):
             if not diag:
                 return Response({"detail": "Invalid diagnostic submission."}, status=400)
 
-        amount = consultant.hourly_rate or 100
+        service = None
+        service_id = ser.validated_data.get("consultant_service_id")
+        if service_id:
+            service = get_object_or_404(
+                ConsultantService,
+                pk=service_id,
+                consultant=consultant,
+                publication_status=ConsultantService.PublicationStatus.APPROVED,
+            )
+            amount = service.price_usd
+        else:
+            amount = consultant.hourly_rate or 100
         booking = Booking.objects.create(
             candidate=request.user,
             consultant=consultant,
             slot=slot,
+            consultant_service=service,
             diagnostic_submission=diag,
             status=Booking.Status.PENDING_PAYMENT,
             amount=amount,
+            currency="USD",
         )
         slot.is_booked = True
         slot.save(update_fields=["is_booked"])
@@ -109,9 +136,9 @@ class BookingListView(generics.ListAPIView):
                 .select_related("candidate", "consultant", "slot")
                 .order_by("-created_at")[:500]
             )
-        if u.role == User.Role.CANDIDATE:
+        if u.role == User.Role.CANDIDATE or user_has_demo_capability(u, "candidate"):
             return Booking.objects.filter(candidate=u).select_related("consultant", "slot")
-        if u.role == User.Role.CONSULTANT:
+        if u.role == User.Role.CONSULTANT or user_has_demo_capability(u, "consultant"):
             profile = ConsultantProfile.objects.filter(user=u).first()
             if not profile:
                 return Booking.objects.none()
