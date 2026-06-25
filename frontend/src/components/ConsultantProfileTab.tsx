@@ -311,7 +311,7 @@ export function ConsultantProfileTab({ profileForm, setProfileForm }: Props) {
         fullWidth
         type="number"
         helperText="Tarifa en USD que cobra por cada consulta individual de una hora"
-        inputProps={{ min: 0, step: '0.01' }}
+        slotProps={{ htmlInput: { min: 0, step: '0.01' } }}
       />
 
       <FormControl fullWidth>

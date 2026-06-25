@@ -97,8 +97,8 @@ export function ConsultantDetailPage() {
     enabled: Boolean(user && userCanAccess(user, 'candidate')),
   })
 
-  const canReviewBooking = (
-    Boolean(user) &&
+  const canReview = Boolean(
+    user &&
     userCanAccess(user, 'candidate') &&
     (userBookingsQuery.data ?? []).find(
       (b) =>
@@ -107,10 +107,20 @@ export function ConsultantDetailPage() {
         b.slot_end_at != null &&
         new Date(b.slot_end_at) < new Date() &&
         b.service_verified === true,
-    )
-  ) ?? null
+    ),
+  )
 
-  const canReview = canReviewBooking != null
+  const reviewBookingId =
+    canReview && userBookingsQuery.data
+      ? (userBookingsQuery.data.find(
+          (b) =>
+            b.consultant === Number(id) &&
+            b.status === 'confirmed' &&
+            b.slot_end_at != null &&
+            new Date(b.slot_end_at) < new Date() &&
+            b.service_verified === true,
+        )?.id ?? undefined)
+      : undefined
 
   const bookMutation = useMutation({
     mutationFn: async ({ slotId }: { slotId: number }) => {
@@ -308,7 +318,7 @@ export function ConsultantDetailPage() {
       <ReviewForm
         consultantId={Number(id)}
         canReview={canReview}
-        bookingId={canReviewBooking?.id ?? undefined}
+        bookingId={reviewBookingId}
         onReviewSubmitted={() => {
           void qc.invalidateQueries({ queryKey: ['consultant', id] })
           void qc.invalidateQueries({ queryKey: ['my-bookings'] })

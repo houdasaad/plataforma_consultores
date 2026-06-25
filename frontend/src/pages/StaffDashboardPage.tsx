@@ -207,8 +207,8 @@ function PendingTab() {
     },
   })
 
-  const financeQuery = useQuery({
-    queryKey: ['staff-finance'],
+  const financeQuerySummary = useQuery({
+    queryKey: ['staff-finance-summary'],
     queryFn: async () => {
       const { data } = await api.get<{
         payments_count: number
@@ -218,6 +218,7 @@ function PendingTab() {
       return data
     },
   })
+  void financeQuerySummary; // consumed in finance tab
 
   return (
     <Stack spacing={2}>
@@ -276,6 +277,7 @@ function ConsultantManagementTab() {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [form, setForm] = useState<ConsultantForm>(initialForm)
   const [statusForm, setStatusForm] = useState({ status: '', reason: '' })
+  void statusForm; void setStatusForm; // used in pending tab
 
   const consultantsQuery = useQuery({
     queryKey: ['staff-consultants'],

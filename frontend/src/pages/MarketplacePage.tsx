@@ -170,7 +170,7 @@ function RequirementCard({
       <CardContent>
         <Stack spacing={1.5}>
           {/* Title row */}
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
               {req.title}
             </Typography>
@@ -184,7 +184,7 @@ function RequirementCard({
           </Typography>
 
           {/* Meta row */}
-          <Stack direction="row" spacing={2} flexWrap="wrap">
+          <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
             <Typography variant="caption" color="text.secondary">
               Presupuesto máx: {req.max_budget_usd} USD
             </Typography>
@@ -211,7 +211,7 @@ function RequirementCard({
                   <Card key={bid.id} variant="outlined" sx={{ bgcolor: 'background.default' }}>
                     <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                       <Stack spacing={0.5}>
-                        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                           <Typography variant="body2" sx={{ fontWeight: 600 }}>
                             {bid.provider_name}
                           </Typography>

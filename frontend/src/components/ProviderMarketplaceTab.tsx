@@ -190,7 +190,7 @@ export function ProviderMarketplaceTab({ provider, viewMode = 'marketplace', sho
         {bids.map((bid) => (
           <Card key={bid.id} variant="outlined">
             <CardContent>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+              <Stack direction="row" spacing={1} sx={{ mb: 1, alignItems: 'center' }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   {bid.service_name}
                 </Typography>
@@ -227,7 +227,7 @@ export function ProviderMarketplaceTab({ provider, viewMode = 'marketplace', sho
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ flexWrap: 'wrap' }}>
+      <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
         <Typography variant="h6">{title}</Typography>
         <TextField
           select
@@ -253,7 +253,7 @@ export function ProviderMarketplaceTab({ provider, viewMode = 'marketplace', sho
       {requirements.map((req) => (
         <Card key={req.id} variant="outlined">
           <CardContent>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                 {req.title}
               </Typography>

@@ -277,7 +277,7 @@ export function CandidateMarketplacePage() {
                 <TextField
                   type="date"
                   label="Fecha inicio"
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   value={digitalAds.start_date}
                   onChange={(e) => setDigitalAds({ ...digitalAds, start_date: e.target.value })}
                   fullWidth
@@ -285,7 +285,7 @@ export function CandidateMarketplacePage() {
                 <TextField
                   type="date"
                   label="Fecha fin"
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   value={digitalAds.end_date}
                   onChange={(e) => setDigitalAds({ ...digitalAds, end_date: e.target.value })}
                   fullWidth
@@ -365,7 +365,7 @@ export function CandidateMarketplacePage() {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
               {r.description.slice(0, 120)}{r.description.length > 120 ? '...' : ''}
             </Typography>
-            <Stack direction="row" spacing={2} flexWrap="wrap">
+            <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
               <Typography variant="caption" color="text.secondary">
                 Estado: {r.status}{r.ai_status ? ` / ${r.ai_status}` : ''}
               </Typography>

@@ -45,7 +45,7 @@ function ProviderProfileTab({ profile }: { profile: ProviderProfile }) {
     <Stack spacing={3}>
       <Card variant="outlined">
         <CardContent>
-          <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center', mb: 2 }}>
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               {profile.name}
             </Typography>
@@ -58,7 +58,7 @@ function ProviderProfileTab({ profile }: { profile: ProviderProfile }) {
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {profile.description || 'Sin descripción.'}
           </Typography>
-          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 2 }}>
+          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 2 }}>
             {profile.categories.map((cat) => (
               <Chip key={cat} label={cat} size="small" variant="outlined" color="primary" />
             ))}
@@ -105,7 +105,7 @@ function ProviderProfileTab({ profile }: { profile: ProviderProfile }) {
           ) : (
             profile.recent_reviews.map((r) => (
               <Box key={r.id} sx={{ mb: 2 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ fontWeight: 600 }}>
                     {r.reviewer_name}
                   </Typography>
